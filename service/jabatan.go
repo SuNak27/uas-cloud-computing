@@ -36,7 +36,18 @@ func (s *jabatanService) All(ctx context.Context) ([]entity.JabatanEntity, error
 
 // Create implements JabatanService.
 func (s *jabatanService) Create(ctx context.Context, input request.JabatanCreate) (entity.JabatanEntity, error) {
-	panic("unimplemented")
+	result, err := s.jabatanRepository.Create(ctx, entity.JabatanEntity{
+		NamaJabatan: input.NamaJabatan,
+		CreatedAt:   input.CreatedAt,
+		UpdatedAt:   input.UpdatedAt,
+	})
+
+	if err != nil {
+		return result, err
+	}
+
+	return result, nil
+
 }
 
 // Delete implements JabatanService.

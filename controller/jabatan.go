@@ -2,6 +2,7 @@ package controller
 
 import (
 	"materi/helper"
+	"materi/model/request"
 	"materi/service"
 	"net/http"
 
@@ -23,19 +24,37 @@ type jabatanController struct {
 
 // All implements JabatanController.
 func (c *jabatanController) All(context *fiber.Ctx) error {
-	user, err := c.jabatanService.All(context.Context())
+	jabatan, err := c.jabatanService.All(context.Context())
 
 	if err != nil {
 		response := helper.APIResponse("Failed to get data", http.StatusBadRequest, "error", err.Error())
 		return context.Status(http.StatusBadRequest).JSON(response)
 	}
-	response := helper.APIResponse("Success to get data", http.StatusOK, "success", user)
+	response := helper.APIResponse("Success to get data", http.StatusOK, "success", jabatan)
 	return context.Status(http.StatusOK).JSON(response)
 }
 
 // Create implements JabatanController.
 func (c *jabatanController) Create(context *fiber.Ctx) error {
-	panic("unimplemented")
+	input := new(request.JabatanCreate)
+
+	if err := context.BodyParser(input); err != nil {
+		response := helper.APIResponse("Failed to create data", http.StatusBadRequest, "error", err.Error())
+		return context.Status(http.StatusBadRequest).JSON(response)
+	}
+
+	jabatan, err := c.jabatanService.Create(context.Context(), request.JabatanCreate{
+		NamaJabatan: input.NamaJabatan,
+		CreatedAt:   helper.TimeNow().Format("2006-01-02 15:04:05"),
+		UpdatedAt:   helper.TimeNow().Format("2006-01-02 15:04:05"),
+	})
+	if err != nil {
+		response := helper.APIResponse("Failed to create data", http.StatusBadRequest, "error", err.Error())
+		return context.Status(http.StatusBadRequest).JSON(response)
+	}
+
+	response := helper.APIResponse("Success to create data", http.StatusOK, "success", jabatan)
+	return context.Status(http.StatusOK).JSON(response)
 }
 
 // Delete implements JabatanController.

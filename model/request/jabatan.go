@@ -6,10 +6,12 @@ import (
 
 type JabatanCreate struct {
 	NamaJabatan string `json:"nama_jabatan" form:"nama_jabatan" validate:"required"`
+	CreatedAt   string `json:"created_at"`
+	UpdatedAt   string `json:"updated_at"`
 }
 
 type JabatanUpdate struct {
-	IdJabatan   string `json:"id_jabatan"`
+	IdJabatan   int    `json:"id_jabatan"`
 	NamaJabatan string `json:"nama_jabatan" form:"nama_jabatan" validate:"required"`
 }
 

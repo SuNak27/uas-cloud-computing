@@ -5,7 +5,7 @@ import (
 )
 
 type JabatanEntity struct {
-	ID          int64             `json:"id"`
+	ID          int               `json:"id"`
 	NamaJabatan string            `json:"nama_jabatan"`
 	CreatedAt   string            `json:"created_at"`
 	UpdatedAt   string            `json:"updated_at"`

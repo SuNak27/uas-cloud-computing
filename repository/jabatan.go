@@ -21,7 +21,7 @@ type JabatanConnetion struct {
 // All implements JabatanRepository.
 func (r *JabatanConnetion) All(ctx context.Context) ([]entity.JabatanEntity, error) {
 
-	SQL := "SELECT * FROM jabatan"
+	SQL := "SELECT * FROM jabatan WHERE deleted_at IS NULL"
 	rows, err := r.tx.QueryContext(ctx, SQL)
 	if err != nil {
 		return nil, err
@@ -47,7 +47,13 @@ func (r *JabatanConnetion) All(ctx context.Context) ([]entity.JabatanEntity, err
 
 // Create implements JabatanRepository.
 func (r *JabatanConnetion) Create(ctx context.Context, input entity.JabatanEntity) (entity.JabatanEntity, error) {
-	panic("unimplemented")
+	SQl := "INSERT INTO jabatan (nama_jabatan, created_at, updated_at) VALUES (?, ?, ?)"
+	_, err := r.tx.ExecContext(ctx, SQl, input.NamaJabatan, input.CreatedAt, input.UpdatedAt)
+	if err != nil {
+		return input, err
+	}
+
+	return input, nil
 }
 
 // Delete implements JabatanRepository.
